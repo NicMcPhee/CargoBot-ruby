@@ -9,6 +9,7 @@ class CargoBot
     @crashes = 0
     @topples = 0
     @steps = 0
+    @step_limit = 200
   end
   
   def activate
@@ -17,10 +18,6 @@ class CargoBot
       @steps += 1
       process_command(@commands.pop)
     end
-  end
-  
-  def call(prog)
-    @program[prog-1].reverse_each { |c| @commands.push(c) }
   end
   
   def not_finished
@@ -32,21 +29,28 @@ class CargoBot
   
   def process_command(c)
     case c
-    when /call(\d)$/
-      call($1.to_i)
-    when /L/
-      move(-1)
-    when /R/
-      move(1)
-    when /claw_(\w+)/
-      if @claw_holding.to_s == $1
-        claw
-      end
-    when /claw/
-      claw
+    when /call(\d)(_)?(\w+)?/
+      call($1.to_i) if satisfies_condition($3)
+    when /L(_)?(\w+)?/
+      move(-1) if satisfies_condition($2)
+    when /R(_)?(\w+)?/
+      move(+1) if satisfies_condition($2)
+    when /claw(_)?(\w+)?/
+      claw if satisfies_condition($2)
     else
       raise "Unknown command: " + c.to_s
     end
+  end
+  
+  def satisfies_condition(condition)
+    condition.nil? or 
+      (condition == "any" and !@claw_holding.nil?) or
+      (condition == "none" and @claw_holding.nil?) or
+      @claw_holding.to_s == condition
+  end
+  
+  def call(prog)
+    @program[prog-1].reverse_each { |c| @commands.push(c) }
   end
   
   def move(delta)
