@@ -1,3 +1,7 @@
+# This is Nic McPhee's implementation
+
+I (Nic McPhee) forked Bill Tozier's original Github repository, deleted his implementation of the CargoBot class and started on my own, implementing against Bill's Cucumber features. All the remaining info is from Bill's original readme.
+
 # Cargo-Bot emulator
 
 The point of this project is to provide an evaluator for machine learning algorithms searching the space of Cargo-Bot problems and their solutions.
