@@ -6,6 +6,7 @@ class CargoBot
     @program = Array.new
     @stacks = Array.new
     @commands = Array.new
+    @claw_position = 1
     @crashes = 0
     @topples = 0
     @steps = 0
