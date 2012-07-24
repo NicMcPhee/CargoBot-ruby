@@ -1,5 +1,5 @@
 class CargoBot
-  attr_accessor :fragile, :unstable, :program, :stacks, :claw_position, :step_limit
+  attr_accessor :fragile, :unstable, :program, :stacks, :claw_position, :step_limit, :goal
   attr_reader :claw_holding, :crashes, :topples, :steps
   
   def initialize
@@ -24,7 +24,12 @@ class CargoBot
     !@commands.empty? and
       @crashes == 0 and 
       @topples == 0 and 
-      (@step_limit.nil? or @steps < @step_limit)
+      (@step_limit.nil? or @steps < @step_limit) and
+      goal_not_reached
+  end
+  
+  def goal_not_reached
+    @stacks != @goal
   end
   
   def process_command(c)
