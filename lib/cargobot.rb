@@ -12,6 +12,19 @@ class CargoBot
     @step_limit = 200
   end
   
+  def load_program(program)
+    prog_index = 0
+    @program[prog_index] ||= Array.new
+    program.split.each do |command|
+      if command =~ /prog_(\d)/
+        prog_index = $1.to_i - 1
+        @program[prog_index] ||= Array.new
+      else
+        @program[prog_index].push(command.intern)
+      end
+    end
+  end
+  
   def activate
     call(1)
     while not_finished
